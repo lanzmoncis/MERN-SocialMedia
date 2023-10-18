@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_DATABASE, {
+      dbName: "social_media",
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

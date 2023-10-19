@@ -1,6 +1,36 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
 import generateTokenAndSetCookie from "../utils/generateTokenAndSetCookie.js";
+import mongoose from "mongoose";
+
+// Get user profile
+const getUserProfile = async (req, res) => {
+  // fetch user profile either with username or userId
+  const { query } = req.params;
+
+  try {
+    let user;
+
+    // query is userId
+    if (mongoose.Types.ObjectId.isValid(query)) {
+      user = await User.findOne({ _id: query })
+        .select("-password")
+        .select("-updatedAt");
+    } else {
+      // query is username
+      user = await User.findOne({ username: query })
+        .select("-password")
+        .select("-updatedAt");
+    }
+
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    console.log("Error in getUserProfile: ", err.message);
+  }
+};
 
 // Sign up user
 const signupUser = async (req, res) => {
@@ -87,6 +117,7 @@ const logoutUser = (req, res) => {
   }
 };
 
+// follow/Unfollow user
 const followUnFollowUser = async (req, res) => {
   console.log(req.params);
   try {
@@ -121,4 +152,46 @@ const followUnFollowUser = async (req, res) => {
   }
 };
 
-export { signupUser, loginUser, logoutUser, followUnFollowUser };
+// Update user profile
+const updateUser = async (req, res) => {
+  const { name, email, username, password, bio, profilePic } = req.body;
+
+  const userId = req.user._id;
+  try {
+    let user = await User.findById(userId);
+    if (!user) return res.status(400).json({ error: "User not found" });
+
+    if (req.params.id !== userId.toString())
+      return res
+        .status(400)
+        .json({ error: "You cannot update other user's profile" });
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      user.password = hashedPassword;
+    }
+
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.username = username || user.username;
+    user.profilePic = profilePic || user.profilePic;
+    user.bio = bio || user.bio;
+
+    user = await user.save();
+
+    res.status(200).json({ message: "Profile updated successfully", user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+    console.log("Error in signupUser: ", err.message);
+  }
+};
+
+export {
+  signupUser,
+  loginUser,
+  logoutUser,
+  followUnFollowUser,
+  updateUser,
+  getUserProfile,
+};

@@ -102,7 +102,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// logout user
+// Logout user
 const logoutUser = (req, res) => {
   try {
     res.cookie("jwt", "", { maxAge: 1 });
@@ -113,7 +113,7 @@ const logoutUser = (req, res) => {
   }
 };
 
-// follow/Unfollow user
+// Follow/UnFollow user
 const followUnFollowUser = async (req, res) => {
   console.log(req.params);
   try {

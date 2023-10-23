@@ -15,7 +15,7 @@ function Login() {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/home");
+      navigate("/");
     }
   }, [userInfo, navigate]);
 
@@ -24,7 +24,7 @@ function Login() {
     try {
       const res = await login({ username, password }).unwrap();
       dispatch(setCredentials({ ...res }));
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       console.log(err.message);
     }

@@ -152,6 +152,7 @@ const getFeedPosts = async (req, res) => {
   }
 };
 
+// Get User posts
 const getUserPosts = async (req, res) => {
   const { username } = req.params;
   try {

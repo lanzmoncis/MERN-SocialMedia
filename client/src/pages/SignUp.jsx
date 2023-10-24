@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useRegisterMutation } from "../redux/userApiSlice";
+import { useRegisterMutation } from "../redux/user/userApiSlice";
 
 function SignUp() {
   const [name, setName] = useState("");

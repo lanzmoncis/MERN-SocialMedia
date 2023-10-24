@@ -102,6 +102,7 @@ const likeUnlikePost = async (req, res) => {
   }
 };
 
+// Reply to post
 const replyToPost = async (req, res) => {
   try {
     const { text } = req.body;
@@ -130,6 +131,7 @@ const replyToPost = async (req, res) => {
   }
 };
 
+// Get feed posts
 const getFeedPosts = async (req, res) => {
   try {
     const userId = req.user._id;

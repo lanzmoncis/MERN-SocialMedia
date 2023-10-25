@@ -32,7 +32,7 @@ export const postApiSlice = apiSlice.injectEndpoints({
     }),
     getUserPost: builder.mutation({
       query: () => ({
-        url: `${POSTS_URL}/user/username`,
+        url: `${POSTS_URL}/user/:username`,
         method: "GET",
       }),
     }),
@@ -50,3 +50,13 @@ export const postApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
+
+export const {
+  useCreatePostMutation,
+  useLikeUnlikePostMutation,
+  useReplyToPostMutation,
+  useDeletePostMutation,
+  useGetUserPostMutation,
+  useGetFeedPostMutation,
+  useGetPostMutation,
+} = postApiSlice;

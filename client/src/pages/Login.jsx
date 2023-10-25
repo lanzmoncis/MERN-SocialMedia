@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../redux/userApiSlice";
-import { setCredentials } from "../redux/authSlice";
+import { useLoginMutation } from "../redux/user/userApiSlice";
+import { setCredentials } from "../redux/user/authSlice";
 
 function Login() {
   const [username, setUsername] = useState("");

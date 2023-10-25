@@ -11,17 +11,15 @@ export const postApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     likeUnlikePost: builder.mutation({
-      query: (data) => ({
-        url: `${POSTS_URL}/like/:id`,
+      query: ({ postId }) => ({
+        url: `${POSTS_URL}/like/${postId}`,
         method: "PUT",
-        body: data,
       }),
     }),
     replyToPost: builder.mutation({
-      query: (data) => ({
-        url: `${POSTS_URL}/reply/:id`,
+      query: ({ postId }) => ({
+        url: `${POSTS_URL}/reply/${postId}`,
         method: "PUT",
-        body: data,
       }),
     }),
     deletePost: builder.mutation({

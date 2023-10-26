@@ -6,8 +6,11 @@ import {
 
 function Actions({ postId, comments }) {
   const [reply, setReply] = useState("");
+  const [commentList, setCommentList] = useState(comments);
   const [likeUnlikePost] = useLikeUnlikePostMutation();
   const [replyToPost] = useReplyToPostMutation();
+
+  console.log(commentList);
 
   async function handleLikeAndUnlike() {
     await likeUnlikePost({ postId });
@@ -15,14 +18,15 @@ function Actions({ postId, comments }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await replyToPost({ postId });
+    const newComment = await replyToPost({ postId, text: reply }).unwrap();
+    setCommentList([...comments, newComment.reply]);
+    setReply("");
   }
 
-  console.log(postId);
   return (
     <div>
       <button onClick={handleLikeAndUnlike}>Like</button>
-      {comments.map((comment, index) => (
+      {commentList.map((comment, index) => (
         <p key={index}>{comment.text}</p>
       ))}
       <form onSubmit={handleSubmit}>

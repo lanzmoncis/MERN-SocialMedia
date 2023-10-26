@@ -17,10 +17,13 @@ export const postApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     replyToPost: builder.mutation({
-      query: ({ postId }) => ({
-        url: `${POSTS_URL}/reply/${postId}`,
-        method: "PUT",
-      }),
+      query: ({ postId, ...rest }) => {
+        return {
+          url: `${POSTS_URL}/reply/${postId}`,
+          method: "PUT",
+          body: rest,
+        };
+      },
     }),
     deletePost: builder.mutation({
       query: () => ({

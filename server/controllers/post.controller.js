@@ -1,5 +1,6 @@
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import Reply from "../models/reply.model.js";
 
 // Create post
 const createPost = async (req, res) => {
@@ -41,7 +42,10 @@ const createPost = async (req, res) => {
 // Get post
 const getPost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate({
+      path: "postedBy",
+      select: "username name",
+    });
 
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
@@ -110,22 +114,29 @@ const replyToPost = async (req, res) => {
     const userId = req.user._id;
     const userProfilePic = req.user.profilePic;
     const username = req.user.username;
-
-    console.log("Text:", text);
-    console.log("Post ID:", postId);
+    const name = req.user.name;
 
     if (!text) {
       return res.status(400).json({ error: "Text field is required" });
     }
+
+    const reply = new Reply({
+      userId,
+      text,
+      userProfilePic,
+      username,
+      name,
+    });
+
+    // Save the reply document to obtain its _id
+    await reply.save();
 
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const reply = { userId, text, userProfilePic, username };
-
-    post.replies.push(reply);
+    post.replies.push(reply._id);
     await post.save();
 
     res.status(200).json({ message: "Reply added successfully", reply });
@@ -169,8 +180,41 @@ const getUserPosts = async (req, res) => {
     });
 
     res.status(200).json(posts);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Get post reply
+const getPostReply = async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const postComments = await Reply.find({ postId });
+
+    res.status(200).json(postComments);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// Delete post reply
+const deletePostReply = async (req, res) => {
+  // const { replyId } = req.params;
+  // console.log(replyId);
+  try {
+    const reply = await Reply.findById(req.params.id);
+    if (!reply) {
+      return res.status(404).json({ error: "Reply not found" });
+    }
+
+    if (reply.userId.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ error: "Unauthorized to delete reply" });
+    }
+
+    await Reply.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "Reply deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
 
@@ -182,4 +226,6 @@ export {
   replyToPost,
   getFeedPosts,
   getUserPosts,
+  getPostReply,
+  deletePostReply,
 };

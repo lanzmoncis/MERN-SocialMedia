@@ -159,7 +159,7 @@ const getFeedPosts = async (req, res) => {
     const feedPosts = await Post.find({ postedBy: { $in: following } })
       .populate({
         path: "postedBy",
-        select: "username name",
+        select: "username name profilePic",
       })
       .sort({
         createdAt: -1,

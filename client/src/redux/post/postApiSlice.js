@@ -49,6 +49,18 @@ export const postApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getPostReply: builder.mutation({
+      query: ({ postId }) => ({
+        url: `${POSTS_URL}/reply/${postId}`,
+        method: "GET",
+      }),
+    }),
+    deletePostReply: builder.mutation({
+      query: ({ id }) => ({
+        url: `${POSTS_URL}/reply/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -60,4 +72,6 @@ export const {
   useGetUserPostMutation,
   useGetFeedPostMutation,
   useGetPostMutation,
+  useGetPostReplyMutation,
+  useDeletePostReplyMutation,
 } = postApiSlice;

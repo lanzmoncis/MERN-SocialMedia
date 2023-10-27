@@ -18,7 +18,7 @@ function Home() {
   return (
     <div>
       {posts.map((post) => (
-        <Post post={post} key={post._id} postedBy={post.postedBy} />
+        <Post post={post} key={post._id} />
       ))}
     </div>
   );

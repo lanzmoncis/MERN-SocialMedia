@@ -1,29 +1,19 @@
-import { useEffect, useState } from "react";
-import { useGetUserProfileMutation } from "../redux/user/userApiSlice";
+import { useLikeUnlikePostMutation } from "../redux/post/postApiSlice";
+import Comments from "./Comments";
 
-import Actions from "./Actions";
+function Post({ post }) {
+  const [likeUnlikePost] = useLikeUnlikePostMutation();
 
-function Post({ postedBy, post }) {
-  const [postUser, setPostUser] = useState("");
-  const [getUserProfile] = useGetUserProfileMutation();
-
-  useEffect(() => {
-    async function userProfile() {
-      try {
-        const user = await getUserProfile({ postedBy }).unwrap();
-        setPostUser(user);
-      } catch (err) {
-        console.log(err.message);
-      }
-    }
-    userProfile();
-  }, [getUserProfile, postedBy]);
+  async function handleLikeAndUnlike() {
+    await likeUnlikePost({ post });
+  }
 
   return (
     <div>
-      <h1>{postUser.name}</h1>
+      <h1>{post.postedBy.name}</h1>
       <p>{post.text}</p>
-      <Actions postId={post._id} comments={post.replies} />
+      <button onClick={handleLikeAndUnlike}>Like</button>
+      <Comments postId={post._id} />
     </div>
   );
 }

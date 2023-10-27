@@ -23,7 +23,7 @@ const postSchema = mongoose.Schema(
     replies: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Post",
+        ref: "Reply",
       },
     ],
   },

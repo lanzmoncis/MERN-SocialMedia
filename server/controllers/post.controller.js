@@ -44,7 +44,7 @@ const getPost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id).populate({
       path: "postedBy",
-      select: "username name",
+      select: "username name profilePic",
     });
 
     if (!post) {
@@ -192,11 +192,11 @@ const getUserPosts = async (req, res) => {
 
 // Get post reply
 const getPostReply = async (req, res) => {
-  const { postId } = req.params;
+  const { id: postId } = req.params;
   try {
-    const postComments = await Reply.find({ postId });
-
-    res.status(200).json(postComments);
+    const post = await Post.findOne({ _id: postId }).populate("replies");
+    const replies = post.replies;
+    res.status(200).json(replies);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -204,8 +204,11 @@ const getPostReply = async (req, res) => {
 
 // Delete post reply
 const deletePostReply = async (req, res) => {
+  const { id: replyId } = req.params;
+
   try {
-    const reply = await Reply.findById(req.params.id);
+    console.log(replyId);
+    const reply = await Reply.findById(replyId);
     if (!reply) {
       return res.status(404).json({ error: "Reply not found" });
     }
@@ -214,7 +217,7 @@ const deletePostReply = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized to delete reply" });
     }
 
-    await Reply.findByIdAndDelete(req.params.id);
+    await Reply.findByIdAndDelete(replyId);
     res.status(200).json({ message: "Reply deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });

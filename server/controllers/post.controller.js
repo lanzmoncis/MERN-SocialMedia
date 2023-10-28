@@ -205,7 +205,6 @@ const getPostReply = async (req, res) => {
 // Delete post reply
 const deletePostReply = async (req, res) => {
   const { id: replyId } = req.params;
-
   try {
     console.log(replyId);
     const reply = await Reply.findById(replyId);

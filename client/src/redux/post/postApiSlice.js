@@ -56,8 +56,8 @@ export const postApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deletePostReply: builder.mutation({
-      query: ({ id }) => ({
-        url: `${POSTS_URL}/reply/${id}`,
+      query: ({ replyId }) => ({
+        url: `${POSTS_URL}/reply/${replyId}`,
         method: "DELETE",
       }),
     }),

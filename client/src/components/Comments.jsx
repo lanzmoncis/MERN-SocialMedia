@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   useReplyToPostMutation,
   useGetPostReplyMutation,
-  useDeletePostMutation,
+  useDeletePostReplyMutation,
 } from "../redux/post/postApiSlice";
 
 function Comments({ postId }) {
@@ -10,7 +10,7 @@ function Comments({ postId }) {
   const [reply, setReply] = useState("");
   const [replyToPost] = useReplyToPostMutation();
   const [getPostReply] = useGetPostReplyMutation();
-  const [deletePostReply] = useDeletePostMutation();
+  const [deletePostReply] = useDeletePostReplyMutation();
 
   useEffect(() => {
     async function getReply() {
@@ -29,7 +29,7 @@ function Comments({ postId }) {
   }
 
   async function handleDelete(replyId) {
-    await deletePostReply({ id: replyId });
+    await deletePostReply({ replyId });
   }
 
   return (

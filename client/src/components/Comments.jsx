@@ -4,6 +4,7 @@ import {
   useGetPostReplyMutation,
   useDeletePostReplyMutation,
 } from "../redux/post/postApiSlice";
+import { useSelector } from "react-redux";
 
 function Comments({ postId }) {
   const [replyList, setReplyList] = useState([]);
@@ -11,6 +12,10 @@ function Comments({ postId }) {
   const [replyToPost] = useReplyToPostMutation();
   const [getPostReply] = useGetPostReplyMutation();
   const [deletePostReply] = useDeletePostReplyMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  console.log(userInfo);
 
   useEffect(() => {
     async function getReply() {
@@ -39,7 +44,9 @@ function Comments({ postId }) {
           return (
             <li key={reply._id}>
               <p>{reply.text}</p>
-              <button onClick={() => handleDelete(reply._id)}>Delete</button>
+              {userInfo._id === reply.userId ? (
+                <button onClick={() => handleDelete(reply._id)}>Delete</button>
+              ) : null}
             </li>
           );
         })}
@@ -52,7 +59,6 @@ function Comments({ postId }) {
         />
         <button>Submit</button>
       </form>
-      ;
     </div>
   );
 }

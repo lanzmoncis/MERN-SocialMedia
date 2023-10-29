@@ -18,7 +18,7 @@ function Comments({ postId }) {
   useEffect(() => {
     async function getReply() {
       const res = await getPostReply({ postId }).unwrap();
-      setReplyList(res);
+      setReplyList([...res]);
     }
     getReply();
   }, [getPostReply, postId]);
@@ -32,6 +32,8 @@ function Comments({ postId }) {
 
   async function handleDelete(replyId) {
     await deletePostReply({ replyId });
+    const updatedReply = replyList.filter((reply) => reply._id !== replyId);
+    setReplyList(updatedReply);
   }
 
   return (

@@ -180,9 +180,14 @@ const getUserPosts = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const posts = await Post.find({ postedBy: user._id }).sort({
-      createdAt: -1,
-    });
+    const posts = await Post.find({ postedBy: user._id })
+      .populate({
+        path: "postedBy",
+        select: "username name profilePic",
+      })
+      .sort({
+        createdAt: -1,
+      });
 
     res.status(200).json(posts);
   } catch (err) {
@@ -206,7 +211,6 @@ const getPostReply = async (req, res) => {
 const deletePostReply = async (req, res) => {
   const { id: replyId } = req.params;
   try {
-    console.log(replyId);
     const reply = await Reply.findById(replyId);
     if (!reply) {
       return res.status(404).json({ error: "Reply not found" });

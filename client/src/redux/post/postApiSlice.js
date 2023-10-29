@@ -1,4 +1,5 @@
 import { apiSlice } from "../apiSlice";
+
 const POSTS_URL = "/api/posts";
 
 export const postApiSlice = apiSlice.injectEndpoints({
@@ -32,8 +33,8 @@ export const postApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getUserPost: builder.mutation({
-      query: () => ({
-        url: `${POSTS_URL}/user/:username`,
+      query: ({ username }) => ({
+        url: `${POSTS_URL}/user/${username}`,
         method: "GET",
       }),
     }),

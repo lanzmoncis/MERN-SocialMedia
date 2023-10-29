@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   useReplyToPostMutation,
   useGetPostReplyMutation,
   useDeletePostReplyMutation,
 } from "../redux/post/postApiSlice";
-import { useSelector } from "react-redux";
 
 function Comments({ postId }) {
   const [replyList, setReplyList] = useState([]);
@@ -14,8 +14,6 @@ function Comments({ postId }) {
   const [deletePostReply] = useDeletePostReplyMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
-
-  console.log(userInfo);
 
   useEffect(() => {
     async function getReply() {
@@ -28,7 +26,6 @@ function Comments({ postId }) {
   async function handleSubmit(e) {
     e.preventDefault();
     const newReply = await replyToPost({ postId, text: reply }).unwrap();
-    console.log(newReply);
     setReplyList([...replyList, newReply.reply]);
     setReply("");
   }

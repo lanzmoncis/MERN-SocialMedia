@@ -6,7 +6,6 @@ import Reply from "../models/reply.model.js";
 const createPost = async (req, res) => {
   try {
     const { postedBy, text } = req.body;
-    let { img } = req.body;
 
     if (!postedBy || !text) {
       return res
@@ -30,10 +29,16 @@ const createPost = async (req, res) => {
         .json({ error: `Text must be less than ${maxLength} characters` });
     }
 
-    const newPost = new Post({ postedBy, text, img });
+    const newPost = new Post({ postedBy, text });
     await newPost.save();
 
-    res.status(201).json({ message: "Post created successfully", newPost });
+    const currPost = await Post.findById(newPost._id).populate({
+      path: "postedBy",
+      select: "name username profilePic",
+    });
+
+    console.log(currPost);
+    res.status(201).json({ message: "Post created successfully", currPost });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

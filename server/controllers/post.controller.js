@@ -29,7 +29,10 @@ const createPost = async (req, res) => {
         .json({ error: `Text must be less than ${maxLength} characters` });
     }
 
-    const newPost = new Post({ postedBy, text });
+    const newPost = new Post({
+      postedBy,
+      text,
+    });
     await newPost.save();
 
     const currPost = await Post.findById(newPost._id).populate({
@@ -37,7 +40,7 @@ const createPost = async (req, res) => {
       select: "name username profilePic",
     });
 
-    console.log(currPost);
+    console.log(newPost);
     res.status(201).json({ message: "Post created successfully", currPost });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -40,7 +40,6 @@ const createPost = async (req, res) => {
       select: "name username profilePic",
     });
 
-    console.log(newPost);
     res.status(201).json({ message: "Post created successfully", currPost });
   } catch (err) {
     res.status(500).json({ error: err.message });

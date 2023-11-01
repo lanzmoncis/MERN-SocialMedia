@@ -20,7 +20,7 @@ function Home() {
     <div>
       <CreatePost setPosts={setPosts} posts={posts} />
       {posts.map((post) => (
-        <Post post={post} key={post._id} />
+        <Post post={post} key={post._id} setPosts={setPosts} posts={posts} />
       ))}
     </div>
   );

@@ -11,10 +11,10 @@ function Post({ post, setPosts, posts }) {
 
   async function handleLikeAndUnlike(postId) {
     await likeUnlikePost({ postId });
+    console.log(post.postedBy);
   }
 
   async function handleDeletePost(postId) {
-    console.log(postId);
     await deletePost({ postId });
     const updatedPosts = posts.filter((postsId) => postsId._id !== postId);
     setPosts(updatedPosts);

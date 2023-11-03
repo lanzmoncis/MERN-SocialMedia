@@ -11,7 +11,8 @@ function Home() {
   useEffect(() => {
     async function feedPosts() {
       const res = await getFeedPost().unwrap();
-      setPosts([...res]);
+      console.log(res);
+      setPosts(res);
     }
     feedPosts();
   }, [getFeedPost]);

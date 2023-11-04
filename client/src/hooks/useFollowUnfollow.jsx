@@ -1,12 +1,11 @@
 import { useFollowUnfollowMutation } from "../redux/user/userApiSlice";
 
-function useFollowUnfollow() {
+export function useFollowUnfollow() {
   const [followUnfollow] = useFollowUnfollowMutation();
 
-  async function handleFollowUnfollow(id) {
-    await followUnfollow({ id });
+  async function handleFollowUnfollow(userId) {
+    await followUnfollow({ userId });
   }
+
   return { handleFollowUnfollow };
 }
-
-export default useFollowUnfollow;

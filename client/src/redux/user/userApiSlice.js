@@ -31,8 +31,8 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getUserProfile: builder.mutation({
-      query: ({ postedBy }) => ({
-        url: `${USERS_URL}/profile/${postedBy}`,
+      query: ({ username }) => ({
+        url: `${USERS_URL}/profile/${username}`,
         method: "GET",
       }),
     }),

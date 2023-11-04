@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 const getUserProfile = async (req, res) => {
   // fetch user profile either with username or userId
   const { query } = req.params;
-
+  console.log(req.params);
   try {
     let user;
 
@@ -115,7 +115,6 @@ const logoutUser = (req, res) => {
 
 // Follow/UnFollow user
 const followUnFollowUser = async (req, res) => {
-  console.log(req.params);
   try {
     const { id } = req.params;
     const userToModify = await User.findById(id);
